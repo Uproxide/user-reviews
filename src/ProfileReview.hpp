@@ -7,6 +7,7 @@ protected:
 	bool setup() override;
 
     bool empty = false;
+    bool firstLoad = true;
 
     CCMenuItemSpriteExtra* reviewButton;
     CCLabelBMFont* noReviews;
@@ -14,6 +15,7 @@ protected:
     CCScale9Sprite* background;
     LoadingCircle* loadingCircle = LoadingCircle::create();
     ScrollLayer* scroll = nullptr;
+    CCLayer* layer2;
 
     void parseJson(std::string str);
     void onReview(CCObject* sender);
@@ -26,4 +28,6 @@ public:
 	static ProfileReview* create();
     void getReviews();
     void onClose(CCObject*);
+    void loadCells();
+    void reloadReviews();
 };

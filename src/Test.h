@@ -13,12 +13,17 @@ class ReviewCell : public CCLayerColor
 
         std::string user;
 
-        bool init(std::string username, std::string reviewText)
+        std::string reviewsID;
+
+        bool init(std::string username, std::string reviewText, int reviewID, GJUserScore* score)
         {
             if (!CCLayerColor::init())
                 return false;
 
             user = username;
+            reviewsID = std::to_string(reviewID);
+
+            auto GAM = GJAccountManager::sharedState();
 
 
             this->setOpacity(50);
@@ -56,7 +61,23 @@ class ReviewCell : public CCLayerColor
 
             this->addChild(revText);
 
-           
+            auto deleteSpr = CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png");
+            deleteSpr->setScale(0.5);
+
+            auto deleteBtn = CCMenuItemSpriteExtra::create(
+                deleteSpr,
+                this,
+                menu_selector(ReviewCell::onDelete)
+            );
+
+            deleteBtn->setPosition(285, 25.5);
+
+            if (GAM->m_username == score->m_userName ||
+                GAM->m_username == user) {
+                menu->addChild(deleteBtn);
+            }
+
+            
 
             return true;
         }
@@ -67,10 +88,25 @@ class ReviewCell : public CCLayerColor
             CCDirector::sharedDirector()->replaceScene(scene);
         }
 
-        static ReviewCell* create(std::string username, std::string reviewText)
+        void onDelete(CCObject* sender) {
+           std::string url = fmt::format("https://uproxide.xyz/api/v1/reviews/deleteReview.php?id={}", reviewsID);
+    
+            web::AsyncWebRequest()
+                .fetch(url)
+                .text()
+                .then([this](std::string const& json) {
+                    Notification::create("Successfully deleted");
+                    this->removeFromParent();
+                })
+                .expect([this](std::string const& json) {
+                    log::error("something went wrong :3");
+                });
+        }
+
+        static ReviewCell* create(std::string username, std::string reviewText, int reviewID, GJUserScore* score)
         {
             ReviewCell* pRet = new ReviewCell();
-            if (pRet && pRet->init(username, reviewText)) {
+            if (pRet && pRet->init(username, reviewText, reviewID, score)) {
                 pRet->autorelease();
                 return pRet;
             } else {

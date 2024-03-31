@@ -10,9 +10,8 @@ protected:
 
     TextInput* inp;
 
-    void onReview(CCObject* sender);
-    void reloadReviews();
-
 public:
 	static UploadReview* create();
+    void onReview(CCObject* sender);
+    void doSomething();
 };

@@ -28,6 +28,8 @@ bool UploadReview::setup() {
 
     inp->setPositionY(inp->getPositionY() + 5);
 
+    inp->setCommonFilter(CommonFilter::Any);
+
     this->addChild(inp);
 
     auto btn = CCMenuItemSpriteExtra::create(
@@ -56,7 +58,7 @@ bool UploadReview::setup() {
 
 
 bool ProfileReview::setup() {
-    m_noElasticity = false;
+    m_noElasticity = true;
 	auto winSize = CCDirector::sharedDirector()->getWinSize();
 
     popup = this;
@@ -152,7 +154,8 @@ void ProfileReview::onGetReviewsFinished() {
                 const auto& reviewObject = pair.second;
                 std::string userName = reviewObject["userName"].as_string();
                 std::string reviewText = reviewObject["reviewText"].as_string();
-                auto cell = ReviewCell::create(userName, reviewText);
+                int reviewID = reviewObject["reviewID"].as_int();
+                auto cell = ReviewCell::create(userName, reviewText, reviewID, score);
                 cell->setPositionY(basePosY);
                 scroll->m_contentLayer->addChild(cell);
                 scroll->m_contentLayer->setAnchorPoint(ccp(0,1));
@@ -223,7 +226,7 @@ void UploadReview::onReview(CCObject* sender) {
                 } else if (json.contains("error")) {
                     Notification::create("Something went wrong.", CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png"))->show();
                 } else {
-                    Notification::create("Successfully Reviewed this User.", CCSprite::createWithSpriteFrameName("GJ_completesIcon_001.png"))->show();
+                    doSomething();
                 }
                 
             })
@@ -231,6 +234,15 @@ void UploadReview::onReview(CCObject* sender) {
                 log::error("something went wrong :3");
             });
     }
+}
+
+void UploadReview::doSomething() {
+    this->keyBackClicked();
+    Notification::create("Successfully Reviewed this User.", CCSprite::createWithSpriteFrameName("GJ_completesIcon_001.png"))->show();
+
+    popup->onClose(nullptr);
+    popup = ProfileReview::create();
+    popup->show();
 }
 
 ProfileReview* ProfileReview::create() {
