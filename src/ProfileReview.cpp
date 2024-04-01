@@ -111,6 +111,7 @@ void ProfileReview::parseJson(std::string str) {
 }
 
 void ProfileReview::getReviews() {
+    this->retain();
     std::string url = fmt::format("https://uproxide.xyz/api/v1/reviews/getReviews.php?id={}", score->m_accountID);
     
     web::AsyncWebRequest()
@@ -182,6 +183,7 @@ void ProfileReview::onGetReviewsFinished() {
     this->setTouchEnabled(true);
     CCTouchDispatcher::get()->addTargetedDelegate(this, -129, true);
     CCTouchDispatcher::get()->addTargetedDelegate(scroll, -130, true);
+    this->release();
     }   
 }
 
