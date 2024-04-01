@@ -97,7 +97,7 @@ bool ProfileReview::setup() {
 }
 
 void ProfileReview::parseJson(std::string str) {
-    log::info("test2 parsejson func")
+    log::info("test2 parsejson func");
     if (str == "[]") {
         empty = true;
     } else {
@@ -118,7 +118,7 @@ void ProfileReview::getReviews() {
         .fetch(url)
         .text()
         .then([this](std::string const& json) {
-	    log::info("test1 fetch info")
+	    log::info("test1 fetch info");
             parseJson(json);
         })
         .expect([this](std::string const& json) {
@@ -128,7 +128,7 @@ void ProfileReview::getReviews() {
 
 void ProfileReview::onGetReviewsFinished() {
     this->loadingCircle->fadeAndRemove();
-    log::info("test3 final function")
+    log::info("test3 final function");
 
     auto winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -186,7 +186,7 @@ void ProfileReview::onGetReviewsFinished() {
     CCTouchDispatcher::get()->addTargetedDelegate(this, -129, true);
     CCTouchDispatcher::get()->addTargetedDelegate(scroll, -130, true);
     }
-    log::info("test4 finish finallllll FUNCTION DO DO DOOOOOO")
+    log::info("test4 finish finallllll FUNCTION DO DO DOOOOOO");
 }
 
 
