@@ -283,7 +283,7 @@ class $modify(PP, ProfilePage) {
 
 		if (auto menu = this->getChildByIDRecursive("left-menu")) {
 			if (auto btnAlready = menu->getChildByID("review-btn"_spr)) {
-				btnAlready.removeFromParent();
+				btnAlready->removeFromParent();
 			}
 			menu->addChild(button);
 			menu->updateLayout();
