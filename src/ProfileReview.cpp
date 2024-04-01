@@ -3,6 +3,7 @@
 using namespace geode::prelude;
 
 #include <Geode/modify/ProfilePage.hpp>
+#include <Geode/ui/BasedButtonSprite.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/loader/Log.hpp>
 #include <Geode/ui/TextInput.hpp>
@@ -273,14 +274,17 @@ class $modify(PP, ProfilePage) {
 
     void loadPageFromUserInfo(GJUserScore* p0) {
         ProfilePage::loadPageFromUserInfo(p0);
-        auto sprite = CCSprite::createWithSpriteFrameName("GJ_bigStar_noShadow_001.png");
+        auto sprite = CircleButtonSprite::createWithSprite("GJ_bigStar_noShadow_001.png", 1.f, CircleBaseColor::Blue);
         sprite->setScale(0.8);
 		auto button = CCMenuItemSpriteExtra::create(
 			sprite, this, menu_selector(PP::onReviews)
 		);
-		button->setID("test-button");
+		button->setID("review-btn"_spr);
 
 		if (auto menu = this->getChildByIDRecursive("left-menu")) {
+			if (auto btnAlready = menu->getChildByID("review-btn"_spr)) {
+				btnAlready.removeFromParent();
+			}
 			menu->addChild(button);
 			menu->updateLayout();
 		}
