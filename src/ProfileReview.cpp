@@ -119,9 +119,11 @@ void ProfileReview::getReviews() {
         .text()
         .then([this](std::string const& json) {
             parseJson(json);
+	    this->release();
         })
         .expect([this](std::string const& json) {
             log::error("something went wrong :3");
+	    this->release();
         });
 }
 
@@ -183,7 +185,6 @@ void ProfileReview::onGetReviewsFinished() {
     this->setTouchEnabled(true);
     CCTouchDispatcher::get()->addTargetedDelegate(this, -129, true);
     CCTouchDispatcher::get()->addTargetedDelegate(scroll, -130, true);
-    this->release();
     }   
 }
 
