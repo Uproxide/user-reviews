@@ -13,3 +13,4 @@ https://www.patreon.com/uproxide/membership
 
  * Brift (Icon)
  * Uproxide (Code)
+ * Coopeeo (Code)
