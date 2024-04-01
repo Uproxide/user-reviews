@@ -127,66 +127,68 @@ void ProfileReview::getReviews() {
 }
 
 void ProfileReview::onGetReviewsFinished() {
-    this->loadingCircle->fadeAndRemove();
-    log::info("test3 final function");
-
-    auto winSize = CCDirector::sharedDirector()->getWinSize();
-
-    scroll = ScrollLayer::create(ccp(300, 150));
-    scroll->setAnchorPoint(ccp(0, 0));
-    scroll->ignoreAnchorPointForPosition(false);
-
-    auto noReviews = CCLabelBMFont::create("No Reviews for this User.\nWant to write one?", "bigFont.fnt");
-    noReviews->setPosition(winSize / 2);
-    noReviews->setScale(0.5);
-
-    if (empty) {
-        this->addChild(noReviews);
-    } else {
-        int basePosY = 117;
-        background = cocos2d::extension::CCScale9Sprite::create("square02_small.png");
-        background->setContentSize(scroll->getContentSize());
-        background->setOpacity(75);
-        background->setPosition(winSize / 2);
-        this->addChild(background);
-        background->addChild(scroll);
-
-        scroll->m_contentLayer->removeAllChildren();
-
-        if (profileJson.is_object()) {
-            for (const auto& pair : profileJson.as_object()) {
-                const auto& reviewObject = pair.second;
-                std::string userName = reviewObject["userName"].as_string();
-                std::string reviewText = reviewObject["reviewText"].as_string();
-                int reviewID = reviewObject["reviewID"].as_int();
-                auto cell = ReviewCell::create(userName, reviewText, reviewID, score);
-                cell->setPositionY(basePosY);
-                scroll->m_contentLayer->addChild(cell);
-                scroll->m_contentLayer->setAnchorPoint(ccp(0,1));
-
-                float height = std::max<float>(scroll->getContentSize().height, 35 * scroll->m_contentLayer->getChildrenCount());
-
-                scroll->m_contentLayer->setContentSize(ccp(scroll->m_contentLayer->getContentSize().width, height));
-
-                CCArrayExt<ReviewCell*> objects = scroll->m_contentLayer->getChildren();
-
-            int i = 0;
-
-			for (auto* obj : objects) {
-                i++;
-				obj->setPositionY(height - (35 * i));
-
-			}
-
-            scroll->moveToTop();
-        }
-    }
-
-    this->setTouchEnabled(true);
-    CCTouchDispatcher::get()->addTargetedDelegate(this, -129, true);
-    CCTouchDispatcher::get()->addTargetedDelegate(scroll, -130, true);
-    }
-    log::info("test4 finish finallllll FUNCTION DO DO DOOOOOO");
+	if (this) {
+	    this->loadingCircle->fadeAndRemove();
+	    log::info("test3 final function");
+	
+	    auto winSize = CCDirector::sharedDirector()->getWinSize();
+	
+	    scroll = ScrollLayer::create(ccp(300, 150));
+	    scroll->setAnchorPoint(ccp(0, 0));
+	    scroll->ignoreAnchorPointForPosition(false);
+	
+	    auto noReviews = CCLabelBMFont::create("No Reviews for this User.\nWant to write one?", "bigFont.fnt");
+	    noReviews->setPosition(winSize / 2);
+	    noReviews->setScale(0.5);
+	
+	    if (empty) {
+	        this->addChild(noReviews);
+	    } else {
+	        int basePosY = 117;
+	        background = cocos2d::extension::CCScale9Sprite::create("square02_small.png");
+	        background->setContentSize(scroll->getContentSize());
+	        background->setOpacity(75);
+	        background->setPosition(winSize / 2);
+	        this->addChild(background);
+	        background->addChild(scroll);
+	
+	        scroll->m_contentLayer->removeAllChildren();
+	
+	        if (profileJson.is_object()) {
+	            for (const auto& pair : profileJson.as_object()) {
+	                const auto& reviewObject = pair.second;
+	                std::string userName = reviewObject["userName"].as_string();
+	                std::string reviewText = reviewObject["reviewText"].as_string();
+	                int reviewID = reviewObject["reviewID"].as_int();
+	                auto cell = ReviewCell::create(userName, reviewText, reviewID, score);
+	                cell->setPositionY(basePosY);
+	                scroll->m_contentLayer->addChild(cell);
+	                scroll->m_contentLayer->setAnchorPoint(ccp(0,1));
+	
+	                float height = std::max<float>(scroll->getContentSize().height, 35 * scroll->m_contentLayer->getChildrenCount());
+	
+	                scroll->m_contentLayer->setContentSize(ccp(scroll->m_contentLayer->getContentSize().width, height));
+	
+	                CCArrayExt<ReviewCell*> objects = scroll->m_contentLayer->getChildren();
+	
+	            int i = 0;
+	
+				for (auto* obj : objects) {
+	                i++;
+					obj->setPositionY(height - (35 * i));
+	
+				}
+	
+	            scroll->moveToTop();
+	        }
+	    }
+	
+	    this->setTouchEnabled(true);
+	    CCTouchDispatcher::get()->addTargetedDelegate(this, -129, true);
+	    CCTouchDispatcher::get()->addTargetedDelegate(scroll, -130, true);
+	    }
+	    log::info("test4 finish finallllll FUNCTION DO DO DOOOOOO");
+	}
 }
 
 
