@@ -282,7 +282,7 @@ class $modify(PP, ProfilePage) {
         ProfilePage::loadPageFromUserInfo(p0);
 	auto image = CCSprite::createWithSpriteFrameName("GJ_bigStar_noShadow_001.png");
         auto sprite = CircleButtonSprite::create(image, CircleBaseColor::Blue);
-        sprite->setScale(0.8);
+        sprite->setScale(0.7);
 		auto button = CCMenuItemSpriteExtra::create(
 			sprite, this, menu_selector(PP::onReviews)
 		);
