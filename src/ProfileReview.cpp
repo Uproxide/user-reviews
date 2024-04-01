@@ -97,6 +97,7 @@ bool ProfileReview::setup() {
 }
 
 void ProfileReview::parseJson(std::string str) {
+    log::info("test2 parsejson func")
     if (str == "[]") {
         empty = true;
     } else {
@@ -111,24 +112,23 @@ void ProfileReview::parseJson(std::string str) {
 }
 
 void ProfileReview::getReviews() {
-    this->retain();
     std::string url = fmt::format("https://uproxide.xyz/api/v1/reviews/getReviews.php?id={}", score->m_accountID);
     
     web::AsyncWebRequest()
         .fetch(url)
         .text()
         .then([this](std::string const& json) {
+	    log::info("test1 fetch info")
             parseJson(json);
-	    this->release();
         })
         .expect([this](std::string const& json) {
             log::error("something went wrong :3");
-	    this->release();
         });
 }
 
 void ProfileReview::onGetReviewsFinished() {
     this->loadingCircle->fadeAndRemove();
+    log::info("test3 final function")
 
     auto winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -185,7 +185,8 @@ void ProfileReview::onGetReviewsFinished() {
     this->setTouchEnabled(true);
     CCTouchDispatcher::get()->addTargetedDelegate(this, -129, true);
     CCTouchDispatcher::get()->addTargetedDelegate(scroll, -130, true);
-    }   
+    }
+    log::info("test4 finish finallllll FUNCTION DO DO DOOOOOO")
 }
 
 
