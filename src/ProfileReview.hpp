@@ -16,6 +16,8 @@ protected:
     LoadingCircle* loadingCircle = LoadingCircle::create();
     ScrollLayer* scroll = nullptr;
     CCLayer* layer2;
+    TextInput* inp;
+    CCMenu* menu;
 
     void parseJson(std::string str);
     void onReview(CCObject* sender);
@@ -30,4 +32,5 @@ public:
     void onClose(CCObject*);
     void loadCells();
     void reloadReviews();
+    void doSomething();
 };

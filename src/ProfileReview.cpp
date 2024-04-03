@@ -15,48 +15,6 @@ using namespace geode::prelude;
 GJUserScore* score;
 ProfileReview* popup;
 
-bool UploadReview::setup() {
-    m_noElasticity = true;
-	auto winSize = CCDirector::sharedDirector()->getWinSize();
-
-    this->setTitle("Upload Review");
-
-    inp = TextInput::create(180, "Review");
-
-    inp->setPosition(winSize / 2);
-
-    inp->setMaxCharCount(45);
-
-    inp->setPositionY(inp->getPositionY() + 5);
-
-    inp->setCommonFilter(CommonFilter::Any);
-
-    this->addChild(inp);
-
-    auto btn = CCMenuItemSpriteExtra::create(
-        ButtonSprite::create("Ok"),
-        this,
-        menu_selector(UploadReview::onReview)
-    );
-
-    auto menu = CCMenu::create();
-
-    menu->setContentSize(btn->getContentSize());
-
-    menu->addChild(btn);
-
-    menu->setPosition(winSize / 2);
-
-    menu->setPositionY(menu->getPositionY() - 35);
-
-    menu->setLayout(RowLayout::create());
-
-
-    this->addChild(menu);
-
-    return true;
-}
-
 
 bool ProfileReview::setup() {
     m_noElasticity = true;
@@ -77,21 +35,9 @@ bool ProfileReview::setup() {
 
     this->m_title->setScale(.95);
 
-    CCSprite* reviewSpr = CCSprite::createWithSpriteFrameName("GJ_chatBtn_001.png");
-    reviewSpr->setScale(0.8);
-
-    reviewButton = CCMenuItemSpriteExtra::create(
-        reviewSpr,
-        this,
-        menu_selector(ProfileReview::onReview)
-    );
-
     getReviews();
 
-	CCMenu* menu = CCMenu::create();
-	menu->setPosition({this->m_mainLayer->getContentWidth()-28,30});
-	menu->addChild(reviewButton);
-	this->m_mainLayer->addChild(menu);
+    this->retain();
 
     return true;
 }
@@ -132,6 +78,8 @@ void ProfileReview::onGetReviewsFinished() {
 	    log::info("test3 final function");
 	
 	    auto winSize = CCDirector::sharedDirector()->getWinSize();
+
+        int revCount = 0;
 	
 	    scroll = ScrollLayer::create(ccp(300, 150));
 	    scroll->setAnchorPoint(ccp(0, 0));
@@ -140,6 +88,32 @@ void ProfileReview::onGetReviewsFinished() {
 	    auto noReviews = CCLabelBMFont::create("No Reviews for this User.\nWant to write one?", "bigFont.fnt");
 	    noReviews->setPosition(winSize / 2);
 	    noReviews->setScale(0.5);
+
+        
+
+        menu = CCMenu::create();
+        
+
+        menu->setPosition({this->m_title->getPositionX(),25});
+        this->m_mainLayer->addChild(menu);
+
+        inp = TextInput::create(260, fmt::format("Write a Review for {}", score->m_userName), "chatFont.fnt");
+        menu->addChild(inp);
+        
+        CCSprite* reviewSpr = CCSprite::createWithSpriteFrameName("GJ_chatBtn_001.png");
+        reviewSpr->setScale(0.75);
+
+        reviewButton = CCMenuItemSpriteExtra::create(
+            reviewSpr,
+            this,
+            menu_selector(ProfileReview::onReview)
+        );
+
+        menu->addChild(reviewButton);
+        menu->setLayout(RowLayout::create());
+        menu->setContentWidth(342);
+        menu->updateLayout();
+        menu->setTouchPriority(-510);
 	
 	    if (empty) {
 	        this->addChild(noReviews);
@@ -170,17 +144,36 @@ void ProfileReview::onGetReviewsFinished() {
 	                scroll->m_contentLayer->setContentSize(ccp(scroll->m_contentLayer->getContentSize().width, height));
 	
 	                CCArrayExt<ReviewCell*> objects = scroll->m_contentLayer->getChildren();
+
+                int i = 0;
 	
-	            int i = 0;
 	
 				for (auto* obj : objects) {
 	                i++;
 					obj->setPositionY(height - (35 * i));
 	
 				}
+
+                revCount = i;
+
 	
 	            scroll->moveToTop();
 	        }
+
+            std::string reviewAmnt;
+
+            if (revCount == 1) {
+                reviewAmnt = fmt::format("{} Review", revCount);
+            } else {
+                reviewAmnt = fmt::format("{} Reviews", revCount);
+            }
+
+            auto reviewCount = CCLabelBMFont::create(reviewAmnt.c_str(), "chatFont.fnt");
+            reviewCount->setScale(0.5);
+            reviewCount->setPosition(m_title->getPosition());
+            reviewCount->setPositionY(reviewCount->getPositionY() - 18);
+
+            this->m_mainLayer->addChild(reviewCount);
 	    }
 	
 	    this->setTouchEnabled(true);
@@ -192,9 +185,6 @@ void ProfileReview::onGetReviewsFinished() {
 }
 
 
-void ProfileReview::onReview(CCObject* sender) {
-    UploadReview::create()->show();
-}
 
 void ProfileReview::keyBackClicked() 
 {
@@ -203,16 +193,18 @@ void ProfileReview::keyBackClicked()
 
 void ProfileReview::onClose(CCObject*)
 {
+    this->release();
     this->removeFromParent();
 }
 
-void UploadReview::onReview(CCObject* sender) {
+void ProfileReview::onReview(CCObject* sender) {
     auto GAM = GJAccountManager::sharedState();
 
     if (inp->getString() == "")
     {
         Notification::create("You cannot have an empty review.", CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png"))->show();
     } else {
+        reviewButton->setVisible(false);
         std::string reviewText = inp->getString();
         
         for (size_t i = 0; i < reviewText.length(); ++i) {
@@ -227,24 +219,23 @@ void UploadReview::onReview(CCObject* sender) {
             .fetch(url)
             .json()
             .then([this](auto const& json) {
-                if (json.contains("bw"))
-                {
-                    Notification::create("Review contains banned words.", CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png"))->show();
-                } else if (json.contains("error")) {
-                    Notification::create("Something went wrong.", CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png"))->show();
+                if (json.contains("error")) {
+                    std::string errorResponse = json["error"].as_string();
+                    Notification::create(fmt::format("Review Upload Failed! {}", errorResponse), CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png"))->show();
+                    reviewButton->setVisible(true);
                 } else {
                     doSomething();
                 }
                 
             })
             .expect([this](auto const& json) {
+                reviewButton->setVisible(true);
                 log::error("something went wrong :3");
             });
     }
 }
 
-void UploadReview::doSomething() {
-    this->keyBackClicked();
+void ProfileReview::doSomething() {
     Notification::create("Successfully Reviewed this User.", CCSprite::createWithSpriteFrameName("GJ_completesIcon_001.png"))->show();
 
     popup->onClose(nullptr);
@@ -254,17 +245,7 @@ void UploadReview::doSomething() {
 
 ProfileReview* ProfileReview::create() {
 	auto ret = new ProfileReview();
-	if (ret && ret->initAnchored(420, 240, "GJ_square01.png")) {
-		ret->autorelease();
-		return ret;
-	}
-	CC_SAFE_DELETE(ret);
-	return nullptr;
-}
-
-UploadReview* UploadReview::create() {
-	auto ret = new UploadReview();
-	if (ret && ret->initAnchored(220, 120, "GJ_square01.png")) {
+	if (ret && ret->initAnchored(342, 240, "GJ_square01.png")) {
 		ret->autorelease();
 		return ret;
 	}
