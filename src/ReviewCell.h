@@ -12,7 +12,7 @@ using namespace geode::prelude;
 class ReviewCell : public CCLayerColor {
     protected:
 
-    GameLevelManager* m_gmgr
+    GameLevelManager* m_gmgr;
 
     public:
 
@@ -28,9 +28,9 @@ class ReviewCell : public CCLayerColor {
             reviewsID = std::to_string(reviewID);
 
             auto GAM = GJAccountManager::sharedState();
-            m_gMgr = GameLevelManager::sharedState(); 
+            m_gmgr = GameLevelManager::sharedState(); 
 
-            m_gMgr->m_userInfoDelegate = this
+            m_gmgr->m_userInfoDelegate = this
 
 
             this->setOpacity(50);

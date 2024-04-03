@@ -14,6 +14,7 @@ protected:
 
     GameLevelManager* m_gmgr;
     int m_accountID;
+    UserInfoDelegate m_oldUID;
 
 public:
 
