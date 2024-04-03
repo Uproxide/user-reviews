@@ -5,11 +5,11 @@
 #include <Geode/ui/TextInput.hpp>
 #include "ProfileReview.hpp"
 #include "UploadReview.hpp"
+#include "IconGetter.hpp"
 
 using namespace geode::prelude;
 
-class ReviewCell : public CCLayerColor
-{
+class ReviewCell : public CCLayerColor {
     protected:
 
     GameLevelManager* m_gmgr
@@ -20,8 +20,7 @@ class ReviewCell : public CCLayerColor
 
         std::string reviewsID;
 
-        bool init(std::string username, std::string reviewText, int reviewID, GJUserScore* score)
-        {
+        bool init(std::string username, std::string reviewText, int reviewID, GJUserScore* score) {
             if (!CCLayerColor::init())
                 return false;
 
@@ -111,8 +110,7 @@ class ReviewCell : public CCLayerColor
                 });
         }
 
-        static ReviewCell* create(std::string username, std::string reviewText, int reviewID, GJUserScore* score)
-        {
+        static ReviewCell* create(std::string username, std::string reviewText, int reviewID, GJUserScore* score) {
             ReviewCell* pRet = new ReviewCell();
             if (pRet && pRet->init(username, reviewText, reviewID, score)) {
                 pRet->autorelease();
@@ -122,10 +120,5 @@ class ReviewCell : public CCLayerColor
                 return nullptr;
             }
         }
-
-        // Functions for UserInfoDelegate!
-        getPageFromUserInfo() // idk remember to fix
-        finish idk() // idk remember to fix
-
 
 };
