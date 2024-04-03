@@ -20,6 +20,8 @@ public:
 
     IconGetter(int const type)*
       : m_accountID(type) {m_gmgr = GameLevelManager::sharedState();}
+    
+    ~IconGetter() override;
 
     // Functions for UserInfoDelegate!
     void getUserInfoFinished(GJUserScore* score) {
