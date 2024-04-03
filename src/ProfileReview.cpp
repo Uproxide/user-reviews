@@ -10,7 +10,7 @@ using namespace geode::prelude;
 #include <Geode/ui/Notification.hpp>
 #include "ProfileReview.hpp"
 #include "UploadReview.hpp"
-#include "Test.h"
+#include "ReviewCell.h"
 
 GJUserScore* score;
 ProfileReview* popup;

@@ -4,11 +4,16 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/TextInput.hpp>
 #include "ProfileReview.hpp"
+#include "UploadReview.hpp"
 
 using namespace geode::prelude;
 
 class ReviewCell : public CCLayerColor
 {
+    protected:
+
+    GameLevelManager* m_gmgr
+
     public:
 
         std::string user;
@@ -24,6 +29,9 @@ class ReviewCell : public CCLayerColor
             reviewsID = std::to_string(reviewID);
 
             auto GAM = GJAccountManager::sharedState();
+            m_gMgr = GameLevelManager::sharedState(); 
+
+            m_gMgr->m_userInfoDelegate = this
 
 
             this->setOpacity(50);
@@ -114,4 +122,10 @@ class ReviewCell : public CCLayerColor
                 return nullptr;
             }
         }
+
+        // Functions for UserInfoDelegate!
+        getPageFromUserInfo() // idk remember to fix
+        finish idk() // idk remember to fix
+
+
 };
