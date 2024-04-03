@@ -99,6 +99,9 @@ void ProfileReview::onGetReviewsFinished() {
 
         inp = TextInput::create(260, fmt::format("Write a Review for {}", score->m_userName), "chatFont.fnt");
         menu->addChild(inp);
+
+        inp->setCommonFilter(CommonFilter::Any);
+        inp->setMaxCharCount(45);
         
         CCSprite* reviewSpr = CCSprite::createWithSpriteFrameName("GJ_chatBtn_001.png");
         reviewSpr->setScale(0.75);
