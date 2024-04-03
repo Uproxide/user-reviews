@@ -30,7 +30,7 @@ class ReviewCell : public CCLayerColor {
             auto GAM = GJAccountManager::sharedState();
             m_gmgr = GameLevelManager::sharedState(); 
 
-            m_gmgr->m_userInfoDelegate = this;
+            m_gmgr->m_userInfoDelegate = IconGetter(0);
 
 
             this->setOpacity(50);

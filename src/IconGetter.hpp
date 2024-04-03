@@ -9,7 +9,7 @@
 using namespace geode::prelude;
 
 
-class IconGetter : UserInfoDelegate
+class IconGetter : UserInfoDelegate {
 protected:
 
     GameLevelManager* m_gmgr;
