@@ -18,7 +18,7 @@ protected:
 
 public:
 
-    IconGetter(int const type)*
+    IconGetter(int const type)
       : m_accountID(type) {m_gmgr = GameLevelManager::sharedState();}
     
     ~IconGetter() override;
