@@ -34,18 +34,17 @@ class ReviewCell : public CCLayerColor {
             auto GAM = GJAccountManager::sharedState();
             m_gmgr = GameLevelManager::sharedState(); 
 
-            //this->setOpacity(50);
-            this->setOpacity(0);
+            this->setOpacity(50);
 
-            this->setContentSize(ccp(295, 39));
+            this->setContentSize(ccp(300, 32));
 
             this->setAnchorPoint(ccp(0, 0));
 
-            auto background = cocos2d::extension::CCScale9Sprite::create("square02_small.png");
-	        background->setContentSize(this->getContentSize());
-	        background->setOpacity(100);
-	        background->setPosition({(this->getContentSize().width / 2), (this->getContentSize().height / 2) - 3});
-	        this->addChild(background);
+            // auto background = cocos2d::extension::CCScale9Sprite::create("square02_small.png");
+	        // background->setContentSize(this->getContentSize());
+	        // background->setOpacity(100);
+	        // background->setPosition({(this->getContentSize().width / 2), (this->getContentSize().height / 2) - 3});
+	        // this->addChild(background);
 
             auto menu = CCMenu::create();
             menu->setPosition(0,-10);
@@ -96,7 +95,7 @@ class ReviewCell : public CCLayerColor {
             usernameButton->setAnchorPoint(ccp(0, 0.5));
 
             menu->addChild(usernameButton);
-            background->addChild(menu);
+            this->addChild(menu);
 
 
             auto revText = CCLabelBMFont::create(reviewText.c_str(), "chatFont.fnt");
@@ -105,7 +104,7 @@ class ReviewCell : public CCLayerColor {
             revText->setScale(.65);
             revText->setAnchorPoint(ccp(0, 0.5));
 
-            background->addChild(revText);
+            this->addChild(revText);
 
             auto deleteSpr = CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png");
             deleteSpr->setScale(0.5);
