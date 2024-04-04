@@ -131,10 +131,23 @@ void ProfileReview::onGetReviewsFinished() {
 	        if (profileJson.is_object()) {
 	            for (const auto& pair : profileJson.as_object()) {
 	                const auto& reviewObject = pair.second;
-	                std::string userName = reviewObject["userName"].as_string();
+                    std::string userName;
+                    int accountID;
+
+                    if (reviewObject.contains("userName") && !reviewObject.contains("accID")) {
+	                    userName = reviewObject["userName"].as_string();
+	                    accountID = 0;
+                    } else if (!reviewObject.contains("userName") && reviewObject.contains("accID")) {
+	                    userName = "User";
+	                    accountID = reviewObject["accID"].as_int();
+                    } else {
+	                    userName = "User";
+	                    accountID = 0;
+                    }
+
 	                std::string reviewText = reviewObject["reviewText"].as_string();
 	                int reviewID = reviewObject["reviewID"].as_int();
-	                auto cell = ReviewCell::create(userName, reviewText, reviewID, score);
+	                auto cell = ReviewCell::create(userName, accountID, reviewText, reviewID, score);
 	                cell->setPositionY(basePosY);
 	                scroll->m_contentLayer->addChild(cell);
 	                scroll->m_contentLayer->setAnchorPoint(ccp(0,1));
