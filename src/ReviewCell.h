@@ -116,10 +116,18 @@ class ReviewCell : public CCLayerColor {
             );
 
             deleteBtn->setPosition(285, 25.5);
-
-            auto l = IconGetter(0, m_gmgr->m_userInfoDelegate, playerBundle);
-            m_icongetter = &l;
-            m_gmgr->m_userInfoDelegate = m_icongetter;
+            
+            if (accid == 0) {
+                auto gamgr = GameManager::sharedState();
+                playerIcon->updatePlayerFrame(1, IconType::Cube);
+                playerIcon->setColor(gamgr->colorForIdx(1));
+                playerIcon->setSecondColor(gamgr->colorForIdx(4));
+                playerIcon->disableGlowOutline();
+            } else {
+                auto l = IconGetter(accid, m_gmgr->m_userInfoDelegate, playerBundle);
+                m_icongetter = &l;
+                m_gmgr->m_userInfoDelegate = m_icongetter;
+            }
 
             if (GAM->m_username == score->m_userName ||
                 GAM->m_username == user) {

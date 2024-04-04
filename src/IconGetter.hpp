@@ -58,8 +58,8 @@ public:
     void getUserInfoFailed(int) {
         auto gmgr = GameManager::sharedState();
         m_playericon->updatePlayerFrame(1, IconType::Cube);
-        m_playericon->setColor(gmgr->colorForIdx(0));
-		m_playericon->setSecondColor(gmgr->colorForIdx(3));
+        m_playericon->setColor(gmgr->colorForIdx(1));
+		m_playericon->setSecondColor(gmgr->colorForIdx(4));
         m_playericon->disableGlowOutline();
         resetUID();
     }
