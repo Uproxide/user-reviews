@@ -116,11 +116,8 @@ class ReviewCell : public CCLayerColor {
             );
 
             deleteBtn->setPosition(285, 25.5);
-            
 
-            IconGetter ig = IconGetter(0, m_gmgr->m_userInfoDelegate, playerBundle);
-
-            m_gmgr->m_userInfoDelegate = &ig;
+            m_gmgr->m_userInfoDelegate = &IconGetter(0, m_gmgr->m_userInfoDelegate, playerBundle);
 
             if (GAM->m_username == score->m_userName ||
                 GAM->m_username == user) {
@@ -128,7 +125,7 @@ class ReviewCell : public CCLayerColor {
             }
 
             
-            m_gmgr->getGJUserInfo(accid);
+
 
             return true;
         }
