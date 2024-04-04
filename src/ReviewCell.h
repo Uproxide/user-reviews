@@ -91,7 +91,7 @@ class ReviewCell : public CCLayerColor {
                 );
             }
 
-            usernameButton->setPosition(6, 35);
+            usernameButton->setPosition(8, 35);
             usernameButton->setAnchorPoint(ccp(0, 0.5));
 
             menu->addChild(usernameButton);
