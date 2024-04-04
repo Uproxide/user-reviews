@@ -13,6 +13,7 @@ class ReviewCell : public CCLayerColor {
     protected:
 
     GameLevelManager* m_gmgr;
+    IconGetter* m_icongetter;
 
     public:
 
@@ -117,7 +118,9 @@ class ReviewCell : public CCLayerColor {
 
             deleteBtn->setPosition(285, 25.5);
 
-            m_gmgr->m_userInfoDelegate = &IconGetter(0, m_gmgr->m_userInfoDelegate, playerBundle);
+            auto l = IconGetter(0, m_gmgr->m_userInfoDelegate, playerBundle);
+            m_icongetter = &l;
+            m_gmgr->m_userInfoDelegate = m_icongetter;
 
             if (GAM->m_username == score->m_userName ||
                 GAM->m_username == user) {

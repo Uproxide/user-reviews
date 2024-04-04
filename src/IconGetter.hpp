@@ -40,7 +40,7 @@ protected:
 public:
 
     IconGetter(int const type, UserInfoDelegate* const olduid, CCMenu* pbun)
-      : m_accountID(type), m_oldUID(olduid), m_playerbundle(pbun) {m_glmgr = GameLevelManager::sharedState();m_playericon = static_cast<SimplePlayer*>(pbun->getChildByID("playericon"));m_playername = static_cast<CCLabelBMFont*>(pbun->getChildByID("playername"));m_glmgr->getGJUserInfo(type)}
+      : m_accountID(type), m_oldUID(olduid), m_playerbundle(pbun) {m_glmgr = GameLevelManager::sharedState();m_playericon = static_cast<SimplePlayer*>(pbun->getChildByID("playericon"));m_playername = static_cast<CCLabelBMFont*>(pbun->getChildByID("playername"));m_glmgr->getGJUserInfo(type);}
     
 
     // Functions for UserInfoDelegate!
