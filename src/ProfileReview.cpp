@@ -134,15 +134,15 @@ void ProfileReview::onGetReviewsFinished() {
                     std::string userName;
                     int accountID;
 
-                    if (reviewObject.contains("userName") && !reviewObject.contains("accID")) {
+                    if (reviewObject.contains("userName") && !reviewObject.contains("uAccountID")) {
 	                    userName = reviewObject["userName"].as_string();
 	                    accountID = 0;
-                    } else if (!reviewObject.contains("userName") && reviewObject.contains("accID")) {
+                    } else if (!reviewObject.contains("userName") && reviewObject.contains("uAccountID")) {
 	                    userName = "User";
-	                    accountID = reviewObject["accID"].as_int();
-                    } else {
-	                    userName = "User";
-	                    accountID = 0;
+	                    accountID = reviewObject["uAccountID"].as_int();
+                    } else if (reviewObject.contains("userName") && reviewObject.contains("uAccountID")) {
+	                    userName = reviewObject["userName"].as_string();
+	                    accountID = reviewObject["uAccountID"].as_int();
                     }
 
 	                std::string reviewText = reviewObject["reviewText"].as_string();
@@ -225,7 +225,7 @@ void ProfileReview::onReview(CCObject* sender) {
             }
         }
 
-        std::string url = fmt::format("https://uproxide.xyz/api/v1/reviews/uploadReview.php?userName={}&reviewText={}&accountID={}", GAM->m_username, reviewText, score->m_accountID);
+        std::string url = fmt::format("https://uproxide.xyz/api/v1/reviews/uploadReview.php?userName={}&reviewText={}&accountID={}&uid={}", GAM->m_username, reviewText, score->m_accountID, GAM->m_accountID);
     
         web::AsyncWebRequest()
             .fetch(url)
