@@ -144,7 +144,7 @@ class ReviewCell : public CCLayerColor {
             CCDirector::sharedDirector()->replaceScene(scene);
         }
         void onUser(CCObject* sender) {
-            ProfilePage::create(accountId, GJAccountManager::sharedState()->m_accountID == accountId);
+            ProfilePage::create(accountId, GJAccountManager::sharedState()->m_accountID == accountId)->show();
         }
 
         void onDelete(CCObject* sender) {
