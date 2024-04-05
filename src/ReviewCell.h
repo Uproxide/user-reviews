@@ -53,7 +53,7 @@ class ReviewCell : public CCLayerColor {
 
             playerBundle->setLayout(
                 RowLayout::create()
-                ->setGap(10)
+                ->setGap(13)
                  ->setGrowCrossAxis(true)
                  ->setCrossAxisReverse(true)
                  ->setAutoScale(false)
@@ -63,7 +63,6 @@ class ReviewCell : public CCLayerColor {
             auto userTxt = CCLabelBMFont::create(username.c_str(), "goldFont.fnt");
             
             userTxt->setScale(.5);
-            userTxt->setAnchorPoint(ccp(0, 0.5));
             userTxt->setID("playername");
 
             auto playerIcon = SimplePlayer::create(0);
@@ -74,6 +73,7 @@ class ReviewCell : public CCLayerColor {
             playerBundle->addChild(playerIcon);
             playerBundle->addChild(userTxt);
             playerBundle->updateLayout();
+            static_cast<CCSprite*>(playerIcon->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(static_cast<CCSprite*>(playerIcon->getChildren()->objectAtIndex(0))->getAnchorPoint().x, 0.6));
 
             CCMenuItemSpriteExtra* usernameButton;
 
@@ -91,7 +91,7 @@ class ReviewCell : public CCLayerColor {
                 );
             }
 
-            usernameButton->setPosition(8, 35);
+            usernameButton->setPosition(12, 35);
             usernameButton->setAnchorPoint(ccp(0, 0.5));
 
             menu->addChild(usernameButton);
@@ -117,16 +117,14 @@ class ReviewCell : public CCLayerColor {
 
             deleteBtn->setPosition(285, 25.5);
             
-            if (accid == 0) {
-                auto gamgr = GameManager::sharedState();
-                playerIcon->updatePlayerFrame(1, IconType::Cube);
-                playerIcon->setColor(gamgr->colorForIdx(1));
-                playerIcon->setSecondColor(gamgr->colorForIdx(4));
-                playerIcon->disableGlowOutline();
-            } else {
-                auto l = IconGetter(accid, m_gmgr->m_userInfoDelegate, playerBundle);
-                m_icongetter = &l;
-                m_gmgr->m_userInfoDelegate = m_icongetter;
+            auto gamgr = GameManager::sharedState();
+            playerIcon->updatePlayerFrame(1, IconType::Cube);
+            playerIcon->setColor(gamgr->colorForIdx(1));
+            playerIcon->setSecondColor(gamgr->colorForIdx(3));
+            playerIcon->disableGlowOutline();
+
+            if (accid != 0) {
+                IconGetter::shared()->setStuff(accid, playerBundle);
             }
 
             if (GAM->m_username == score->m_userName ||
@@ -146,9 +144,7 @@ class ReviewCell : public CCLayerColor {
             CCDirector::sharedDirector()->replaceScene(scene);
         }
         void onUser(CCObject* sender) {
-            GJSearchObject* obj = GJSearchObject::create(SearchType::Users, user);
-            auto scene = CCTransitionFade::create(0.5f, LevelBrowserLayer::scene(obj));
-            CCDirector::sharedDirector()->replaceScene(scene);
+            ProfilePage::create(accountId, GJAccountManager::sharedState()->m_accountID == accountId);
         }
 
         void onDelete(CCObject* sender) {

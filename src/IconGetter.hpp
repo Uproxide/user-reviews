@@ -12,9 +12,11 @@ using namespace geode::prelude;
 class IconGetter : public UserInfoDelegate {
 protected:
 
+    static IconGetter* s_shared;
+
     GameLevelManager* m_glmgr;
     int m_accountID;
-    UserInfoDelegate* const m_oldUID;
+    //UserInfoDelegate* const m_oldUID;
     CCMenu* m_playerbundle;
     SimplePlayer* m_playericon;
     CCLabelBMFont* m_playername;
@@ -39,12 +41,29 @@ protected:
 
 public:
 
-    IconGetter(int const type, UserInfoDelegate* const olduid, CCMenu* pbun)
-      : m_accountID(type), m_oldUID(olduid), m_playerbundle(pbun) {m_glmgr = GameLevelManager::sharedState();m_playericon = static_cast<SimplePlayer*>(pbun->getChildByID("playericon"));m_playername = static_cast<CCLabelBMFont*>(pbun->getChildByID("playername"));m_glmgr->getGJUserInfo(type);}
+    IconGetter() {log::debug("make shared thing of icongetter");}
+    ~IconGetter() {}
+
+    static IconGetter* shared();
+    
+
+    void setStuff(int accid, CCMenu* pbun) { // old: UserInfoDelegate* olduid, CCMenu* pbun) {
+        m_accountID = accid;
+        // m_oldUID = olduid;
+        m_playerbundle = pbun;
+        m_glmgr = GameLevelManager::sharedState();
+        m_playericon = static_cast<SimplePlayer*>(pbun->getChildByID("playericon"));
+        m_playername = static_cast<CCLabelBMFont*>(pbun->getChildByID("playername"));
+        m_glmgr->getGJUserInfo(accid);
+    }
     
 
     // Functions for UserInfoDelegate!
     void getUserInfoFinished(GJUserScore* score) {
+        log::info("GetUserInfoFinished Started");
+        log::info("{}", score->m_color1);
+        log::info("{}", score->m_color2);
+        log::info("{}", score->m_color3);
         auto gmgr = GameManager::sharedState();
         m_playericon->updatePlayerFrame(getIcon(score), static_cast<IconType>(score->m_iconType));
         m_playericon->setColor(gmgr->colorForIdx(score->m_color1));
@@ -56,16 +75,18 @@ public:
     }
 
     void getUserInfoFailed(int) {
+        log::info("GetUserInfoFailed Started");
         auto gmgr = GameManager::sharedState();
         m_playericon->updatePlayerFrame(1, IconType::Cube);
         m_playericon->setColor(gmgr->colorForIdx(1));
-		m_playericon->setSecondColor(gmgr->colorForIdx(4));
+		m_playericon->setSecondColor(gmgr->colorForIdx(3));
         m_playericon->disableGlowOutline();
         resetUID();
     }
 
 
     void userInfoChanged(GJUserScore* score) {
+        log::info("UserInfoChanged Started");
         // do nothing
     }
     

@@ -11,9 +11,21 @@ using namespace geode::prelude;
 #include "ProfileReview.hpp"
 #include "UploadReview.hpp"
 #include "ReviewCell.h"
+#include "IconGetter.hpp"
 
 GJUserScore* score;
 ProfileReview* popup;
+
+IconGetter* IconGetter::s_shared = nullptr;
+
+IconGetter* IconGetter::shared() {
+    if (s_shared == nullptr) {
+        s_shared = new (std::nothrow) IconGetter();
+        GameLevelManager::sharedState()->m_userInfoDelegate = s_shared;
+    }
+
+    return s_shared;
+}
 
 
 bool ProfileReview::setup() {
