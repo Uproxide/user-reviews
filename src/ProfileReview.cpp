@@ -10,10 +10,22 @@ using namespace geode::prelude;
 #include <Geode/ui/Notification.hpp>
 #include "ProfileReview.hpp"
 #include "UploadReview.hpp"
-#include "Test.h"
+#include "ReviewCell.h"
+#include "IconGetter.hpp"
 
 GJUserScore* score;
 ProfileReview* popup;
+
+IconGetter* IconGetter::s_shared = nullptr;
+
+IconGetter* IconGetter::shared() {
+    if (s_shared == nullptr) {
+        s_shared = new (std::nothrow) IconGetter();
+        GameLevelManager::sharedState()->m_userInfoDelegate = s_shared;
+    }
+
+    return s_shared;
+}
 
 
 bool ProfileReview::setup() {
@@ -43,7 +55,6 @@ bool ProfileReview::setup() {
 }
 
 void ProfileReview::parseJson(std::string str) {
-    log::info("test2 parsejson func");
     if (str == "[]") {
         empty = true;
     } else {
@@ -64,7 +75,6 @@ void ProfileReview::getReviews() {
         .fetch(url)
         .text()
         .then([this](std::string const& json) {
-	    log::info("test1 fetch info");
             parseJson(json);
         })
         .expect([this](std::string const& json) {
@@ -75,7 +85,6 @@ void ProfileReview::getReviews() {
 void ProfileReview::onGetReviewsFinished() {
 	if (this) {
 	    this->loadingCircle->fadeAndRemove();
-	    log::info("test3 final function");
 	
 	    auto winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -134,10 +143,23 @@ void ProfileReview::onGetReviewsFinished() {
 	        if (profileJson.is_object()) {
 	            for (const auto& pair : profileJson.as_object()) {
 	                const auto& reviewObject = pair.second;
-	                std::string userName = reviewObject["userName"].as_string();
+                    std::string userName;
+                    int accountID;
+
+                    if (reviewObject.contains("userName") && !reviewObject.contains("uAccountID")) {
+	                    userName = reviewObject["userName"].as_string();
+	                    accountID = 0;
+                    } else if (!reviewObject.contains("userName") && reviewObject.contains("uAccountID")) {
+	                    userName = "User";
+	                    accountID = reviewObject["uAccountID"].as_int();
+                    } else if (reviewObject.contains("userName") && reviewObject.contains("uAccountID")) {
+	                    userName = reviewObject["userName"].as_string();
+	                    accountID = reviewObject["uAccountID"].as_int();
+                    }
+
 	                std::string reviewText = reviewObject["reviewText"].as_string();
 	                int reviewID = reviewObject["reviewID"].as_int();
-	                auto cell = ReviewCell::create(userName, reviewText, reviewID, score);
+	                auto cell = ReviewCell::create(userName, accountID, reviewText, reviewID, score);
 	                cell->setPositionY(basePosY);
 	                scroll->m_contentLayer->addChild(cell);
 	                scroll->m_contentLayer->setAnchorPoint(ccp(0,1));
@@ -183,7 +205,6 @@ void ProfileReview::onGetReviewsFinished() {
 	    CCTouchDispatcher::get()->addTargetedDelegate(this, -129, true);
 	    CCTouchDispatcher::get()->addTargetedDelegate(scroll, -130, true);
 	    }
-	    log::info("test4 finish finallllll FUNCTION DO DO DOOOOOO");
 	}
 }
 
@@ -216,7 +237,7 @@ void ProfileReview::onReview(CCObject* sender) {
             }
         }
 
-        std::string url = fmt::format("https://uproxide.xyz/api/v1/reviews/uploadReview.php?userName={}&reviewText={}&accountID={}", GAM->m_username, reviewText, score->m_accountID);
+        std::string url = fmt::format("https://uproxide.xyz/api/v1/reviews/uploadReview.php?userName={}&reviewText={}&accountID={}&uid={}", GAM->m_username, reviewText, score->m_accountID, GAM->m_accountID);
     
         web::AsyncWebRequest()
             .fetch(url)
