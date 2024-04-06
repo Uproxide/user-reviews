@@ -21,8 +21,8 @@ IconGetter* IconGetter::s_shared = nullptr;
 IconGetter* IconGetter::shared() {
     if (s_shared == nullptr) {
         s_shared = new (std::nothrow) IconGetter();
-        GameLevelManager::sharedState()->m_userInfoDelegate = s_shared;
     }
+    GameLevelManager::sharedState()->m_userInfoDelegate = s_shared;
 
     return s_shared;
 }

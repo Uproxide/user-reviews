@@ -48,6 +48,7 @@ public:
     void setStuff(int accid, CCMenu* pbun) { // old: UserInfoDelegate* olduid, CCMenu* pbun) {
         m_accountID = accid;
         // m_oldUID = olduid;
+        // log::info("call le setStuff");
         m_playerbundle = pbun;
         m_glmgr = GameLevelManager::sharedState();
         m_playericon = static_cast<SimplePlayer*>(pbun->getChildByID("playericon"));
