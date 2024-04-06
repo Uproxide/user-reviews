@@ -218,6 +218,7 @@ void ProfileReview::keyBackClicked()
 
 void ProfileReview::onClose(CCObject*)
 {
+    IconGetter::shared()->clearVector();
     this->release();
     this->removeFromParent();
 }

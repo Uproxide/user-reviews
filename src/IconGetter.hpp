@@ -51,23 +51,14 @@ public:
     void setStuff(int accid, CCMenu* pbun) {
         m_allmenus.insert(m_allmenus.end(), pbun);
         m_allinfo[std::to_string(accid)] = (m_allmenus.size() - 1);
-        log::debug("{}", m_allinfo.dump());
 
-
-        // m_accountID = accid;
-        // m_oldUID = olduid;
-        // log::info("call le setStuff");
-        // m_playerbundle = pbun;
         m_glmgr = GameLevelManager::sharedState();
-        // m_playericon = static_cast<SimplePlayer*>(pbun->getChildByID("playericon"));
-        // m_playername = static_cast<CCLabelBMFont*>(pbun->getChildByID("playername"));
         m_glmgr->getGJUserInfo(accid);
     }
     
 
     // Functions for UserInfoDelegate!
     void getUserInfoFinished(GJUserScore* score) {
-        log::debug("{}", m_allinfo[std::to_string(score->m_accountID)].as_int());
         CCMenu* playerbundle = m_allmenus[m_allinfo[std::to_string(score->m_accountID)].as_int()];
         SimplePlayer* playericon = static_cast<SimplePlayer*>(playerbundle->getChildByID("playericon"));
         CCLabelBMFont* playername = static_cast<CCLabelBMFont*>(playerbundle->getChildByID("playername"));
@@ -97,4 +88,6 @@ public:
 		playericon->enableCustomGlowColor(gmgr->colorForIdx(score->m_color3));
         if(!score->m_glowEnabled) playericon->disableGlowOutline();
     }
+
+    void clearVector() {m_allmenus.clear();}
 };
