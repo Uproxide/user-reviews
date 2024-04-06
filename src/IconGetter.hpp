@@ -20,8 +20,6 @@ protected:
     CCMenu* m_playerbundle;
     SimplePlayer* m_playericon;
     CCLabelBMFont* m_playername;
-
-    void resetUID() {}//m_glmgr->m_userInfoDelegate = m_oldUID;}
     
     int getIcon(GJUserScore* score) {
         IconType type = score->m_iconType;
@@ -60,10 +58,6 @@ public:
 
     // Functions for UserInfoDelegate!
     void getUserInfoFinished(GJUserScore* score) {
-        log::info("GetUserInfoFinished Started");
-        log::info("{}", score->m_color1);
-        log::info("{}", score->m_color2);
-        log::info("{}", score->m_color3);
         auto gmgr = GameManager::sharedState();
         m_playericon->updatePlayerFrame(getIcon(score), static_cast<IconType>(score->m_iconType));
         m_playericon->setColor(gmgr->colorForIdx(score->m_color1));
@@ -71,7 +65,6 @@ public:
 		m_playericon->setGlowOutline(gmgr->colorForIdx(score->m_color3));
 		m_playericon->enableCustomGlowColor(gmgr->colorForIdx(score->m_color3));
         if(!score->m_glowEnabled) m_playericon->disableGlowOutline();
-        resetUID();
     }
 
     void getUserInfoFailed(int) {
@@ -81,13 +74,17 @@ public:
         m_playericon->setColor(gmgr->colorForIdx(1));
 		m_playericon->setSecondColor(gmgr->colorForIdx(3));
         m_playericon->disableGlowOutline();
-        resetUID();
     }
 
 
     void userInfoChanged(GJUserScore* score) {
-        log::info("UserInfoChanged Started");
-        // do nothing
+        auto gmgr = GameManager::sharedState();
+        m_playericon->updatePlayerFrame(getIcon(score), static_cast<IconType>(score->m_iconType));
+        m_playericon->setColor(gmgr->colorForIdx(score->m_color1));
+		m_playericon->setSecondColor(gmgr->colorForIdx(score->m_color2));
+		m_playericon->setGlowOutline(gmgr->colorForIdx(score->m_color3));
+		m_playericon->enableCustomGlowColor(gmgr->colorForIdx(score->m_color3));
+        if(!score->m_glowEnabled) m_playericon->disableGlowOutline();
     }
     
     CCMenu* getPlayerBundle() const {return m_playerbundle;}
