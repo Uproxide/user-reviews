@@ -53,7 +53,7 @@ class ReviewCell : public CCLayerColor {
 
             playerBundle->setLayout(
                 RowLayout::create()
-                ->setGap(13)
+                ->setGap(18)
                  ->setGrowCrossAxis(true)
                  ->setCrossAxisReverse(true)
                  ->setAutoScale(false)
@@ -72,8 +72,9 @@ class ReviewCell : public CCLayerColor {
             
             playerBundle->addChild(playerIcon);
             playerBundle->addChild(userTxt);
+            userTxt->setAnchorPoint(ccp(0, 0.5));
             playerBundle->updateLayout();
-            static_cast<CCSprite*>(playerIcon->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(static_cast<CCSprite*>(playerIcon->getChildren()->objectAtIndex(0))->getAnchorPoint().x, 0.6));
+            static_cast<CCSprite*>(playerIcon->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(0, 0.6));
 
             CCMenuItemSpriteExtra* usernameButton;
 
@@ -91,8 +92,9 @@ class ReviewCell : public CCLayerColor {
                 );
             }
 
-            usernameButton->setPosition(12, 35);
+            usernameButton->setPosition(3, 35);
             usernameButton->setAnchorPoint(ccp(0, 0.5));
+            usernameButton->setContentWidth(113);
 
             menu->addChild(usernameButton);
             this->addChild(menu);

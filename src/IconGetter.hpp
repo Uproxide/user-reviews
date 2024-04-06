@@ -5,6 +5,7 @@
 #include <Geode/ui/TextInput.hpp>
 #include <matjson.hpp>
 #include "ProfileReview.hpp"
+#include <vector>
 
 using namespace geode::prelude;
 
@@ -20,6 +21,8 @@ protected:
     CCMenu* m_playerbundle;
     SimplePlayer* m_playericon;
     CCLabelBMFont* m_playername;
+    matjson::Value m_allinfo;
+    std::vector<CCMenu*> m_allmenus;
     
     int getIcon(GJUserScore* score) {
         IconType type = score->m_iconType;
@@ -45,53 +48,46 @@ public:
     static IconGetter* shared();
     
 
-    void setStuff(int accid, CCMenu* pbun) { // old: UserInfoDelegate* olduid, CCMenu* pbun) {
-        m_accountID = accid;
-        // m_oldUID = olduid;
-        // log::info("call le setStuff");
-        m_playerbundle = pbun;
+    void setStuff(int accid, CCMenu* pbun) {
+        m_allmenus.insert(m_allmenus.end(), pbun);
+        m_allinfo[std::to_string(accid)] = (m_allmenus.size() - 1);
+
         m_glmgr = GameLevelManager::sharedState();
-        m_playericon = static_cast<SimplePlayer*>(pbun->getChildByID("playericon"));
-        m_playername = static_cast<CCLabelBMFont*>(pbun->getChildByID("playername"));
         m_glmgr->getGJUserInfo(accid);
     }
     
 
     // Functions for UserInfoDelegate!
     void getUserInfoFinished(GJUserScore* score) {
+        CCMenu* playerbundle = m_allmenus[m_allinfo[std::to_string(score->m_accountID)].as_int()];
+        SimplePlayer* playericon = static_cast<SimplePlayer*>(playerbundle->getChildByID("playericon"));
+        CCLabelBMFont* playername = static_cast<CCLabelBMFont*>(playerbundle->getChildByID("playername"));
         auto gmgr = GameManager::sharedState();
-        m_playericon->updatePlayerFrame(getIcon(score), static_cast<IconType>(score->m_iconType));
-        m_playericon->setColor(gmgr->colorForIdx(score->m_color1));
-		m_playericon->setSecondColor(gmgr->colorForIdx(score->m_color2));
-		m_playericon->setGlowOutline(gmgr->colorForIdx(score->m_color3));
-		m_playericon->enableCustomGlowColor(gmgr->colorForIdx(score->m_color3));
-        if(!score->m_glowEnabled) m_playericon->disableGlowOutline();
+        playericon->updatePlayerFrame(getIcon(score), static_cast<IconType>(score->m_iconType));
+        playericon->setColor(gmgr->colorForIdx(score->m_color1));
+		playericon->setSecondColor(gmgr->colorForIdx(score->m_color2));
+		playericon->setGlowOutline(gmgr->colorForIdx(score->m_color3));
+		playericon->enableCustomGlowColor(gmgr->colorForIdx(score->m_color3));
+        if(!score->m_glowEnabled) playericon->disableGlowOutline();
     }
 
     void getUserInfoFailed(int) {
-        log::info("GetUserInfoFailed Started");
-        auto gmgr = GameManager::sharedState();
-        m_playericon->updatePlayerFrame(1, IconType::Cube);
-        m_playericon->setColor(gmgr->colorForIdx(1));
-		m_playericon->setSecondColor(gmgr->colorForIdx(3));
-        m_playericon->disableGlowOutline();
+        // don't do anything
     }
 
 
     void userInfoChanged(GJUserScore* score) {
+        CCMenu* playerbundle = m_allmenus[m_allinfo[score->m_accountID].as_int()];
+        SimplePlayer* playericon = static_cast<SimplePlayer*>(playerbundle->getChildByID("playericon"));
+        CCLabelBMFont* playername = static_cast<CCLabelBMFont*>(playerbundle->getChildByID("playername"));
         auto gmgr = GameManager::sharedState();
-        m_playericon->updatePlayerFrame(getIcon(score), static_cast<IconType>(score->m_iconType));
-        m_playericon->setColor(gmgr->colorForIdx(score->m_color1));
-		m_playericon->setSecondColor(gmgr->colorForIdx(score->m_color2));
-		m_playericon->setGlowOutline(gmgr->colorForIdx(score->m_color3));
-		m_playericon->enableCustomGlowColor(gmgr->colorForIdx(score->m_color3));
-        if(!score->m_glowEnabled) m_playericon->disableGlowOutline();
+        playericon->updatePlayerFrame(getIcon(score), static_cast<IconType>(score->m_iconType));
+        playericon->setColor(gmgr->colorForIdx(score->m_color1));
+		playericon->setSecondColor(gmgr->colorForIdx(score->m_color2));
+		playericon->setGlowOutline(gmgr->colorForIdx(score->m_color3));
+		playericon->enableCustomGlowColor(gmgr->colorForIdx(score->m_color3));
+        if(!score->m_glowEnabled) playericon->disableGlowOutline();
     }
-    
-    CCMenu* getPlayerBundle() const {return m_playerbundle;}
 
-        
-
-
-
+    void clearVector() {m_allmenus.clear();}
 };

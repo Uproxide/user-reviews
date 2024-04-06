@@ -21,6 +21,7 @@ IconGetter* IconGetter::s_shared = nullptr;
 IconGetter* IconGetter::shared() {
     if (s_shared == nullptr) {
         s_shared = new (std::nothrow) IconGetter();
+        s_shared->m_allinfo = matjson::parse("{\"info\": {}}")["info"];
     }
     GameLevelManager::sharedState()->m_userInfoDelegate = s_shared;
 
@@ -148,7 +149,7 @@ void ProfileReview::onGetReviewsFinished() {
 
                     if (reviewObject.contains("userName") && !reviewObject.contains("uAccountID")) {
 	                    userName = reviewObject["userName"].as_string();
-	                    accountID = 0;
+	                    accountID = 12;
                     } else if (!reviewObject.contains("userName") && reviewObject.contains("uAccountID")) {
 	                    userName = "User";
 	                    accountID = reviewObject["uAccountID"].as_int();
@@ -217,6 +218,7 @@ void ProfileReview::keyBackClicked()
 
 void ProfileReview::onClose(CCObject*)
 {
+    IconGetter::shared()->clearVector();
     this->release();
     this->removeFromParent();
 }
