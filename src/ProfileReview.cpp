@@ -20,6 +20,7 @@ IconGetter* IconGetter::s_shared = nullptr;
 
 IconGetter* IconGetter::shared() {
     if (s_shared == nullptr) {
+        log::info("Make new IconGetter for shared function");
         s_shared = new (std::nothrow) IconGetter();
         s_shared->m_allinfo = matjson::parse("{\"info\": {}}")["info"];
     }
