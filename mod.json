@@ -14,5 +14,12 @@
         "id": "geode.node-ids",
         "version": ">=1.7.1",
         "importance": "required"
-  }]
+  }],
+  "resources": {
+	"spritesheets": {
+		"URSheet": [
+			"resources/URSheet/*.png"
+		]
+	}
+  }
 }

@@ -36,7 +36,7 @@ bool ProfileReview::setup() {
     popup = this;
 
     this->loadingCircle->setParentLayer(this->m_mainLayer);
-	this->loadingCircle->setPosition({ -70,-40 });
+	this->loadingCircle->setPosition({ -50,-40 });
 	this->loadingCircle->setScale(1.f);
 	this->loadingCircle->show();
 
@@ -287,11 +287,10 @@ class $modify(PP, ProfilePage) {
 
     void loadPageFromUserInfo(GJUserScore* p0) {
         ProfilePage::loadPageFromUserInfo(p0);
-	auto image = CCSprite::createWithSpriteFrameName("GJ_bigStar_noShadow_001.png");
-        auto sprite = CircleButtonSprite::create(image, CircleBaseColor::Blue);
-        sprite->setScale(0.7);
+	    auto image = CCSprite::createWithSpriteFrameName("URStarIcon.png"_spr);
+        image->setScale(0.7);
 		auto button = CCMenuItemSpriteExtra::create(
-			sprite, this, menu_selector(PP::onReviews)
+			image, this, menu_selector(PP::onReviews)
 		);
 		button->setID("review-btn"_spr);
 

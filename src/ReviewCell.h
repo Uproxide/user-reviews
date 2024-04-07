@@ -3,6 +3,8 @@
 #include <Geode/Geode.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/TextInput.hpp>
+#include <cctype>
+#include <algorithm>
 #include "ProfileReview.hpp"
 #include "UploadReview.hpp"
 #include "IconGetter.hpp"
@@ -67,7 +69,7 @@ class ReviewCell : public CCLayerColor {
 
             auto playerIcon = SimplePlayer::create(0);
             
-            playerIcon->setScale(.5);
+            playerIcon->setScale(.475);
             playerIcon->setID("playericon");
             
             playerBundle->addChild(playerIcon);
@@ -94,7 +96,7 @@ class ReviewCell : public CCLayerColor {
 
             usernameButton->setPosition(3, 35);
             usernameButton->setAnchorPoint(ccp(0, 0.5));
-            usernameButton->setContentWidth(113);
+            usernameButton->setContentWidth(150);
 
             menu->addChild(usernameButton);
             this->addChild(menu);
@@ -129,8 +131,19 @@ class ReviewCell : public CCLayerColor {
                 IconGetter::shared()->setStuff(accid, playerBundle);
             }
 
-            if (GAM->m_username == score->m_userName ||
-                GAM->m_username == user) {
+            std::string lowerUsername = GAM->m_username;
+            std::transform(lowerUsername.begin(), lowerUsername.end(), lowerUsername.begin(),
+                        [](unsigned char c) { return std::tolower(c); });
+
+            std::string lowerScoreName = score->m_userName;
+            std::transform(lowerScoreName.begin(), lowerScoreName.end(), lowerScoreName.begin(),
+                        [](unsigned char c) { return std::tolower(c); });
+
+            std::string lowerUser = user;
+            std::transform(lowerUser.begin(), lowerUser.end(), lowerUser.begin(),
+               [](unsigned char c) { return std::tolower(c); });
+
+            if (lowerUsername == lowerScoreName || lowerUsername == lowerUser) {
                 menu->addChild(deleteBtn);
             }
 
