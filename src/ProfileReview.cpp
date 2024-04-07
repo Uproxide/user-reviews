@@ -20,7 +20,6 @@ IconGetter* IconGetter::s_shared = nullptr;
 
 IconGetter* IconGetter::shared() {
     if (s_shared == nullptr) {
-        log::info("Make new IconGetter for shared function");
         s_shared = new (std::nothrow) IconGetter();
         s_shared->m_allinfo = matjson::parse("{\"info\": {}}")["info"];
     }
@@ -289,9 +288,11 @@ class $modify(PP, ProfilePage) {
     void loadPageFromUserInfo(GJUserScore* p0) {
         ProfilePage::loadPageFromUserInfo(p0);
 	    auto image = CCSprite::createWithSpriteFrameName("URStarIcon.png"_spr);
-        image->setScale(0.7);
+        auto sprite = CircleButtonSprite::create(image, CircleBaseColor::Blue);
+        sprite->setScale(0.7);
+        image->setPositionY(25.5);
 		auto button = CCMenuItemSpriteExtra::create(
-			image, this, menu_selector(PP::onReviews)
+			sprite, this, menu_selector(PP::onReviews)
 		);
 		button->setID("review-btn"_spr);
 
