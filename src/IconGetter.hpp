@@ -15,12 +15,6 @@ protected:
 
     static IconGetter* s_shared;
 
-    GameLevelManager* m_glmgr;
-    int m_accountID;
-    //UserInfoDelegate* const m_oldUID;
-    CCMenu* m_playerbundle;
-    SimplePlayer* m_playericon;
-    CCLabelBMFont* m_playername;
     matjson::Value m_allinfo;
     std::vector<CCMenu*> m_allmenus;
     
@@ -42,7 +36,7 @@ protected:
 
 public:
 
-    IconGetter() {log::debug("make shared thing of icongetter");}
+    IconGetter() {log::debug("make IconGetter");}
     ~IconGetter() {}
 
     static IconGetter* shared();
@@ -51,9 +45,7 @@ public:
     void setStuff(int accid, CCMenu* pbun) {
         m_allmenus.insert(m_allmenus.end(), pbun);
         m_allinfo[std::to_string(accid)] = (m_allmenus.size() - 1);
-
-        m_glmgr = GameLevelManager::sharedState();
-        m_glmgr->getGJUserInfo(accid);
+        GameLevelManager::sharedState()->getGJUserInfo(accid);
     }
     
 
