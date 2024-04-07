@@ -1,7 +1,9 @@
 # User Reviews
 ## v1.3.0
-* Added Player Icons 
+* Added Player Icons
+* Changed the Star Icon on the Button
 * Submitting reviews on v1.2.1 and older will no longer work this update
+* Other Fixes
 ## v1.2.1
 * Hot Fixes
 ## v1.2.0
