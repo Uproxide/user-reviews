@@ -1,6 +1,7 @@
 # User Reviews
 ## v1.3.0
-* Player ICONS!!!!!!!!!!!!!
+* Added Player Icons 
+* Submitting reviews on v1.2.1 and older will no longer work this update
 ## v1.2.1
 * Hot Fixes
 ## v1.2.0
