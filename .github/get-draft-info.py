@@ -10,7 +10,7 @@ import subprocess
 
 
 
-archive = zipfile.ZipFile('uproxide.user_reviews', 'r')
+archive = zipfile.ZipFile('uproxide.user_reviews.geode', 'r')
 eee = archive.open('changelog.md')
 eeee = []
 for eeeee in eee:
