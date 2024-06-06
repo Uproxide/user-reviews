@@ -11,18 +11,26 @@
 	"name": "User Reviews",
 	"developer": "Uproxide",
 	"description": "Adds user reviews to profiles :silly:",
+	"repository": "https://github.com/Uproxide/user-reviews.git",
+	"settings": {
+		"hide-icon": {
+			"name": "Hide Icons",
+			"type": "bool",
+			"default": false
+		}
+	},
 	"dependencies": [
 		{
 			"id": "geode.node-ids",
-			"version": ">=1.7.1",
+			"version": ">=1.11.0",
 			"importance": "required"
   		}
   	],
-  "resources": {
-	"spritesheets": {
-		"URSheet": [
-			"resources/URSheet/*.png"
-		]
+	"resources": {
+		"spritesheets": {
+			"URSheet": [
+				"resources/URSheet/*.png"
+			]
+		}
 	}
-  }
 }
