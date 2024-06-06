@@ -1,20 +1,23 @@
 {
-	"geode": "2.0.0-beta.22",
+	"geode": "2.0.0-beta.27",
 	"gd": {
 		"android": "2.205",
 		"win": "2.204",
-		"mac": "2.200"
+		"mac": "2.200",
+		"ios": "2.205"
 	},
-	"version": "v1.3.0",
+	"version": "v1.4.0",
 	"id": "uproxide.user_reviews",
 	"name": "User Reviews",
 	"developer": "Uproxide",
 	"description": "Adds user reviews to profiles :silly:",
-	"dependencies": [{
-        "id": "geode.node-ids",
-        "version": ">=1.7.1",
-        "importance": "required"
-  }],
+	"dependencies": [
+		{
+			"id": "geode.node-ids",
+			"version": ">=1.7.1",
+			"importance": "required"
+  		}
+  	],
   "resources": {
 	"spritesheets": {
 		"URSheet": [
