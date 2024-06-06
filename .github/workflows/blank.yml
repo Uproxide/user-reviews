@@ -37,15 +37,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build the mod
-        if: ${{ 'matrix.config.target != "iOS"' }}
+        if: ${{ matrix.config.target != 'iOS' }}
         uses: geode-sdk/build-geode-mod@main
         with:
           #sdk: nightly # commented because of gd 2.206
+          bindings-ref: 0554d64fa67e77183a15dcf03145e00f717da631 # here so it can build on 2.205
           combine: true
           target: ${{ matrix.config.target }}
           
       - name: Build the mod (iOS)
-        if: ${{ 'matrix.config.target == "iOS"' }}
+        if: ${{ matrix.config.target == 'iOS' }}
         uses: RoootTheFox/build-geode-mod@main
         with:
           sdk: nightly

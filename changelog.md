@@ -1,4 +1,7 @@
 # User Reviews
+## v1.4.0
+* Added a setting to remove player icons (for people who don't want to crash nor get ratelimited)
+* Other Fixes
 ## v1.3.0
 * Added Player Icons
 * Changed the Star Icon on the Button
