@@ -90,7 +90,7 @@ class ReviewCell : public CCLayerColor {
                 );
             }
 
-            if (Mod::get()->getSettingValue<bool>("hide-icon") == true) {
+            if (Mod::get()->getSettingValue<bool>("hide-icon") == false) {
                 playerBundle->addChild(playerIcon);
             }
             playerBundle->addChild(usernameButton);
@@ -139,7 +139,7 @@ class ReviewCell : public CCLayerColor {
             playerIcon->setSecondColor(gamgr->colorForIdx(3));
             playerIcon->disableGlowOutline();
 
-            if (accid != 0 && Mod::get()->getSettingValue<bool>("hide-icon") == true) {
+            if (accid != 0 && Mod::get()->getSettingValue<bool>("hide-icon") == false) {
                 IconGetter::shared()->setStuff(accid, playerBundle);
             }
 
