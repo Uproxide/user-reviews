@@ -7,7 +7,7 @@ A Mod that allows you to review a user on their profile!
 Just press the star and you can see and review other users!
 
 give me your money to keep this running!
-https://www.patreon.com/uproxide/membership
+https://ko-fi.com/uproxide
 
 # Credits
 

@@ -65,40 +65,52 @@ class ReviewCell : public CCLayerColor {
             auto userTxt = CCLabelBMFont::create(username.c_str(), "goldFont.fnt");
             
             userTxt->setScale(.5);
-            userTxt->setID("playername");
+            userTxt->setID("player-name");
 
             auto playerIcon = SimplePlayer::create(0);
             
             playerIcon->setScale(.475);
-            playerIcon->setID("playericon");
+            playerIcon->setID("player-icon");
             
-            playerBundle->addChild(playerIcon);
-            playerBundle->addChild(userTxt);
-            userTxt->setAnchorPoint(ccp(0, 0.5));
-            playerBundle->updateLayout();
-            static_cast<CCSprite*>(playerIcon->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(0, 0.6));
+            
 
             CCMenuItemSpriteExtra* usernameButton;
 
             if(accid == 0) {
                 usernameButton = CCMenuItemSpriteExtra::create(
-                    playerBundle,
+                    userTxt,
                     this,
                     menu_selector(ReviewCell::onUserNoAccID)
                 );
             } else if(accid != 0) {
                 usernameButton = CCMenuItemSpriteExtra::create(
-                    playerBundle,
+                    userTxt,
                     this,
                     menu_selector(ReviewCell::onUser)
                 );
             }
 
-            usernameButton->setPosition(3, 35);
-            usernameButton->setAnchorPoint(ccp(0, 0.5));
-            usernameButton->setContentWidth(150);
+            if (Mod::get()->getSettingValue<bool>("hide-icon") == true) {
+                playerBundle->addChild(playerIcon);
+            }
+            playerBundle->addChild(usernameButton);
 
-            menu->addChild(usernameButton);
+            playerBundle->setPosition(3, 35);
+            playerBundle->setAnchorPoint(ccp(0, 0.5));
+            playerBundle->setContentWidth(150);
+
+            // usernameButton->setAnchorPoint(ccp(0, 0.5));
+
+            /*
+                usernameButton->setPosition(3, 35);
+                usernameButton->setContentWidth(150);
+            */
+            
+            userTxt->setAnchorPoint(ccp(0, 0.5));
+            playerBundle->updateLayout();
+            static_cast<CCSprite*>(playerIcon->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(0, 0.6));
+
+            menu->addChild(playerBundle);
             this->addChild(menu);
 
 
@@ -127,7 +139,7 @@ class ReviewCell : public CCLayerColor {
             playerIcon->setSecondColor(gamgr->colorForIdx(3));
             playerIcon->disableGlowOutline();
 
-            if (accid != 0) {
+            if (accid != 0 && Mod::get()->getSettingValue<bool>("hide-icon") == true) {
                 IconGetter::shared()->setStuff(accid, playerBundle);
             }
 

@@ -16,6 +16,7 @@
 		"hide-icon": {
 			"name": "Hide Icons",
 			"type": "bool",
+			"description": "Removes icons from reviews (prevents rate limiting and stuff).",
 			"default": false
 		}
 	},
