@@ -41,7 +41,6 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           #sdk: nightly # commented because of gd 2.206
-          sdk: latest
           bindings-ref: 0554d64fa67e77183a15dcf03145e00f717da631 # here so it can build on 2.205
           combine: true
           target: ${{ matrix.config.target }}
