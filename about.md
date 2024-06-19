@@ -1,4 +1,4 @@
-## FOR SUPPORT, JOIN OUR [DISCORD](https://discord.gg/xEDTWtvaC6)
+## FOR SUPPORT, JOIN OUR [DISCORD](https://discord.com/invite/dDU5furFHk)
 
 # User Reviews
 (Inspired by the ReviewDB vencord plugin)

@@ -1,17 +1,24 @@
 {
-	"geode": "2.0.0-beta.27",
+	"geode": "3.0.0-beta.1",
 	"gd": {
-		"android": "2.205",
-		"win": "2.204",
-		"mac": "2.200",
-		"ios": "2.205"
+		"android": "2.206",
+		"win": "2.206",
+		"mac": "2.206"
 	},
 	"version": "v1.4.0",
 	"id": "uproxide.user_reviews",
 	"name": "User Reviews",
-	"developer": "Uproxide",
+	"developers": [
+		"Uproxide",
+		"Cooper"
+	],
 	"description": "Adds user reviews to profiles :silly:",
-	"repository": "https://github.com/Uproxide/user-reviews.git",
+	"repository": "https://github.com/uproxide/user-reviews",
+	"links": {
+		"community": "https://discord.com/invite/dDU5furFHk",
+		"homepage": "https://uproxide.xyz",
+		"source": "https://github.com/uproxide/user-reviews"
+	},
 	"settings": {
 		"hide-icon": {
 			"name": "Hide Icons",
@@ -23,7 +30,7 @@
 	"dependencies": [
 		{
 			"id": "geode.node-ids",
-			"version": ">=1.11.0",
+			"version": ">=1.12.0",
 			"importance": "required"
   		}
   	],
