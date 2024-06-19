@@ -73,11 +73,12 @@ void ProfileReview::getReviews() {
         if (web::WebResponse* res = e->getValue()) {
             if (res->ok()) {
                 log::info("Review Get Success");
+                this->profileJson = res->json().unwrap();
+                this->onGetReviewsFinished();
                 Notification::create("Successfully deleted", NotificationIcon::Success)->show();
-                this->parseJson(res->string().unwrapOr("Error"));
             } else {
                 log::info("Reviews Get Failed - Status Code: {} - {}", res->code(), HttpStatus::reasonPhrase(res->code()));
-                Notification::create(fmt::format("Status Code: {} - {}", res->code(), HttpStatus::reasonPhrase(res->code())), NotificationIcon::Error);
+                Notification::create(fmt::format("Status Code: {} - {}", res->code(), HttpStatus::reasonPhrase(res->code())), NotificationIcon::Error)->show();
             }
         } else if (web::WebProgress* p = e->getProgress()) {
             log::info("get reviews progress: {}", p->downloadProgress().value_or(0.f));
