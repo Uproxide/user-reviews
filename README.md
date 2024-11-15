@@ -1,4 +1,4 @@
-## FOR SUPPORT, JOIN OUR [DISCORD](https://discord.com/invite/dDU5furFHk)
+## Discontinued, Thanks for using :]
 
 # User Reviews
 (Inspired by the ReviewDB vencord plugin)
